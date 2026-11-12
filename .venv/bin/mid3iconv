@@ -1,0 +1,6 @@
+#!/home/utkarsh-jha/asciishit/.venv/bin/python3
+import sys
+from mutagen._tools.mid3iconv import entry_point
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(entry_point())
