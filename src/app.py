@@ -20,6 +20,197 @@ ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 MUSIC_DIR = ASSETS_DIR / "music"
 DEFAULT_USER = "utkarsh-jha"
 
+# 9-row-tall x 10-column-wide full-block hero clock glyphs
+HERO_DIGITS = {
+    "0": (
+        "██████████",
+        "██████████",
+        "███    ███",
+        "███    ███",
+        "███    ███",
+        "███    ███",
+        "███    ███",
+        "██████████",
+        "██████████",
+    ),
+    "1": (
+        "   ████   ",
+        " ██████   ",
+        "   ████   ",
+        "   ████   ",
+        "   ████   ",
+        "   ████   ",
+        "   ████   ",
+        " ████████ ",
+        " ████████ ",
+    ),
+    "2": (
+        "██████████",
+        "██████████",
+        "       ███",
+        "██████████",
+        "██████████",
+        "███       ",
+        "███       ",
+        "██████████",
+        "██████████",
+    ),
+    "3": (
+        "██████████",
+        "██████████",
+        "       ███",
+        "  ████████",
+        "  ████████",
+        "       ███",
+        "       ███",
+        "██████████",
+        "██████████",
+    ),
+    "4": (
+        "███    ███",
+        "███    ███",
+        "███    ███",
+        "██████████",
+        "██████████",
+        "       ███",
+        "       ███",
+        "       ███",
+        "       ███",
+    ),
+    "5": (
+        "██████████",
+        "██████████",
+        "███       ",
+        "██████████",
+        "██████████",
+        "       ███",
+        "       ███",
+        "██████████",
+        "██████████",
+    ),
+    "6": (
+        "██████████",
+        "██████████",
+        "███       ",
+        "██████████",
+        "██████████",
+        "███    ███",
+        "███    ███",
+        "██████████",
+        "██████████",
+    ),
+    "7": (
+        "██████████",
+        "██████████",
+        "       ███",
+        "      ███ ",
+        "     ███  ",
+        "    ███   ",
+        "    ███   ",
+        "    ███   ",
+        "    ███   ",
+    ),
+    "8": (
+        "██████████",
+        "██████████",
+        "███    ███",
+        "██████████",
+        "██████████",
+        "███    ███",
+        "███    ███",
+        "██████████",
+        "██████████",
+    ),
+    "9": (
+        "██████████",
+        "██████████",
+        "███    ███",
+        "██████████",
+        "██████████",
+        "       ███",
+        "       ███",
+        "██████████",
+        "██████████",
+    ),
+    ":": (
+        "    ",
+        "    ",
+        " ██ ",
+        " ██ ",
+        "    ",
+        " ██ ",
+        " ██ ",
+        "    ",
+        "    ",
+    ),
+}
+
+# 3-row-tall crisp block glyphs for headers, buttons, and date/host banner
+BANNER_FONT = {
+    "A": ("█▀█", "█▀█", "▀ ▀"),
+    "B": ("█▀▄", "█▀▄", "▀▀ "),
+    "C": ("█▀▀", "█  ", "▀▀▀"),
+    "D": ("█▀▄", "█ █", "▀▀ "),
+    "E": ("█▀▀", "█▀▀", "▀▀▀"),
+    "F": ("█▀▀", "█▀ ", "▀  "),
+    "G": ("█▀▀", "█ █", "▀▀▀"),
+    "H": ("█ █", "█▀█", "▀ ▀"),
+    "I": ("▀█▀", " █ ", "▀▀▀"),
+    "J": ("  █", "  █", "▀▀ "),
+    "K": ("█ █", "█▀▄", "▀ ▀"),
+    "L": ("█  ", "█  ", "▀▀▀"),
+    "M": ("█▄█", "█ █", "▀ ▀"),
+    "N": ("█▀█", "█ █", "▀ ▀"),
+    "O": ("█▀█", "█ █", "▀▀▀"),
+    "P": ("█▀█", "█▀▀", "▀  "),
+    "Q": ("█▀█", "█ █", "▀▀▄"),
+    "R": ("█▀█", "█▀▄", "▀ ▀"),
+    "S": ("█▀▀", "▀▀█", "▀▀ "),
+    "T": ("▀█▀", " █ ", " ▀ "),
+    "U": ("█ █", "█ █", "▀▀▀"),
+    "V": ("█ █", "█ █", " ▀ "),
+    "W": ("█ █", "█ █", "▀▄▀"),
+    "X": ("█ █", " ▀ ", "▀ ▀"),
+    "Y": ("█ █", " ▀ ", " ▀ "),
+    "Z": ("▀▀█", "▄▀ ", "▀▀▀"),
+    "0": ("█▀█", "█ █", "▀▀▀"),
+    "1": ("▄█ ", " █ ", "▀▀▀"),
+    "2": ("▀▀█", "▄▀ ", "▀▀▀"),
+    "3": ("▀▀█", " ▀█", "▀▀ "),
+    "4": ("█ █", "▀▀█", "  ▀"),
+    "5": ("█▀▀", "▀▀█", "▀▀ "),
+    "6": ("█▀▀", "█▀█", "▀▀▀"),
+    "7": ("▀▀█", "  █", "  ▀"),
+    "8": ("█▀█", "█▀█", "▀▀▀"),
+    "9": ("█▀█", "▀▀█", "▀▀ "),
+    "-": ("   ", "▀▀▀", "   "),
+    "•": ("   ", " ▄ ", "   "),
+    ":": ("   ", " ▄ ", " ▀ "),
+    "/": ("  █", " █ ", "█  "),
+    ".": ("   ", "   ", " ▄ "),
+    " ": ("  ", "  ", "  "),
+}
+
+
+def render_hero_clock(time_str: str) -> str:
+    rows = [""] * 9
+    for idx, ch in enumerate(time_str):
+        glyph = HERO_DIGITS.get(ch, ("    ",) * 9)
+        sep = "  " if idx > 0 else ""
+        for r in range(9):
+            rows[r] += sep + glyph[r]
+    return "\n".join(rows)
+
+
+def render_banner_text(text: str) -> str:
+    rows = ["", "", ""]
+    for idx, ch in enumerate(text.upper()):
+        glyph = BANNER_FONT.get(ch, ("   ", "   ", "   "))
+        sep = " " if idx > 0 else ""
+        for r in range(3):
+            rows[r] += sep + glyph[r]
+    return "\n".join(rows)
+
 
 def parse_time_arg(val: str) -> float:
     if ":" in val:
@@ -31,12 +222,25 @@ def parse_time_arg(val: str) -> float:
     return float(val)
 
 
-def build_progress_bar(pos: float, dur: float, width: int = 24) -> str:
+def build_progress_bar(pos: float, dur: float, width: int = 34) -> str:
     if dur <= 0:
         return "─" * width
     ratio = max(0.0, min(1.0, pos / dur))
     filled = int(round(ratio * (width - 1)))
     return ("━" * filled) + "●" + ("─" * max(0, width - filled - 1))
+
+
+def write_tty_atomic(seq: str) -> None:
+    """Write raw terminal control bytes in a single unbuffered os.write() call."""
+    data = seq.encode("ascii")
+    try:
+        if sys.__stdout__ is not None:
+            os.write(sys.__stdout__.fileno(), data)
+            return
+    except Exception:
+        pass
+    sys.stdout.write(seq)
+    sys.stdout.flush()
 
 
 class VinylDisplay(Static):
@@ -69,74 +273,185 @@ class VinylDisplay(Static):
         lbl_row = reg.y + self.renderer.label_row_offset + 1
         lbl_col = reg.x + self.renderer.label_col_offset + 1
         esc = self.renderer.build_kitty_label_escape(self.angle, image_id=42)
-        sys.__stdout__.write(f"\x1b7\x1b[{lbl_row};{lbl_col}H{esc}\x1b8")
-        sys.__stdout__.flush()
+        write_tty_atomic(
+            f"\x1b[?2026h\x1b7\x1b[{lbl_row};{lbl_col}H{esc}\x1b8\x1b[?2026l"
+        )
 
 
 class AsciiGreeterApp(App):
+    ansi_color = True
+
     CSS = """
+    App, Screen {
+        background: ansi_default;
+    }
+
     Screen {
-        background: transparent;
-        layers: base overlay;
+        layers: base vinyl login;
     }
 
     #top-bar {
+        layer: base;
         dock: top;
-        height: 2;
+        height: auto;
         width: 100%;
-        content-align: center middle;
-        text-align: center;
-        color: #d8dee9;
-        background: transparent;
+        align: center top;
+        background: ansi_default;
         padding-top: 1;
     }
 
-    #login-layer {
+    #clock-big {
         width: 100%;
-        height: 100%;
+        text-align: center;
+        color: #f4f6fb;
+        text-style: bold;
+        background: ansi_default;
+    }
+
+    #clock-sub {
+        width: 100%;
+        text-align: center;
+        color: #eceff4;
+        text-style: bold;
+        margin-top: 1;
+        background: ansi_default;
+    }
+
+    #vinyl-dock {
+        layer: vinyl;
+        dock: right;
+        height: auto;
+        align: right top;
+        padding: 1 2 0 0;
+        background: ansi_default;
+    }
+
+    #vinyl-card {
+        height: auto;
+        padding: 1 1;
+        background: ansi_default;
+        border: none;
+        align: center top;
+    }
+
+    #vinyl-disc {
+        background: ansi_default;
+    }
+
+    #track-title {
+        width: 100%;
+        text-align: center;
+        color: #f4f6fb;
+        text-style: bold;
+        margin-top: 1;
+        background: ansi_default;
+    }
+
+    #track-time {
+        width: 100%;
+        text-align: center;
+        color: #eceff4;
+        text-style: bold;
+        background: ansi_default;
+    }
+
+    #track-bar {
+        width: 100%;
+        text-align: center;
+        color: #e5b567;
+        margin-bottom: 1;
+        background: ansi_default;
+    }
+
+    #controls-row {
+        width: 100%;
+        height: 3;
         align: center middle;
-        background: transparent;
+        background: ansi_default;
+    }
+
+    .media-btn {
+        min-width: 7;
+        height: 3;
+        margin: 0 1;
+        background: #121722;
+        color: #eceff4;
+        border: heavy #8896ab;
+    }
+
+    .media-btn:hover {
+        border: heavy #e5b567;
+        background: #2b2416;
+    }
+
+    #btn-play {
+        min-width: 13;
+        border: heavy #e5b567;
+    }
+
+    #login-layer {
+        layer: login;
+        dock: bottom;
+        width: 100%;
+        height: auto;
+        align: right bottom;
+        padding: 0 2 1 0;
+        background: ansi_default;
     }
 
     #login-card {
-        width: 46;
+        width: 58;
         height: auto;
-        padding: 1 3;
-        background: rgba(8, 10, 16, 0.76);
-        border: round #6e7b91;
+        padding: 0 2;
+        background: ansi_default;
+        border: heavy #c8d3e6;
     }
 
     #card-title {
         width: 100%;
         text-align: center;
-        color: #eceff4;
+        color: #f4f6fb;
         text-style: bold;
+        padding-bottom: 1;
         margin-bottom: 1;
+        border-bottom: heavy #8896ab;
+        background: ansi_default;
     }
 
     .field-label {
-        color: #9aa5b8;
+        color: #ffffff;
+        text-style: bold;
         margin-top: 0;
+        margin-bottom: 0;
+        background: ansi_default;
+    }
+
+    #pass-label {
+        margin-top: 1;
     }
 
     Input {
         width: 100%;
-        background: rgba(15, 19, 28, 0.90);
-        border: tall #4c566a;
-        color: #eceff4;
-        margin-bottom: 1;
+        height: 3;
+        padding: 0 2;
+        background: #0d111a;
+        border: heavy #8896ab;
+        color: #ffffff;
+        text-style: bold;
+        margin-bottom: 0;
     }
 
     Input:focus {
-        border: tall #e5b567;
+        border: heavy #e5b567;
     }
 
     #status-msg {
         width: 100%;
-        min-height: 1;
+        height: 1;
         text-align: center;
         color: #bf616a;
-        margin-bottom: 1;
+        text-style: bold;
+        background: ansi_default;
     }
 
     #status-msg.ok {
@@ -145,78 +460,18 @@ class AsciiGreeterApp(App):
 
     #login-btn {
         width: 100%;
-        background: rgba(28, 34, 48, 0.92);
+        height: 5;
+        margin-top: 0;
+        text-style: bold;
+        background: #141926;
         color: #eceff4;
-        border: round #5e6c84;
+        border: heavy #8896ab;
     }
 
     #login-btn:hover, #login-btn:focus {
-        background: rgba(229, 181, 103, 0.22);
-        border: round #e5b567;
+        background: #2b2416;
+        border: heavy #e5b567;
         color: #ffffff;
-    }
-
-    #vinyl-dock {
-        layer: overlay;
-        dock: right;
-        height: 100%;
-        align: right bottom;
-        padding: 0 2 1 0;
-        background: transparent;
-    }
-
-    #vinyl-card {
-        height: auto;
-        padding: 1 2;
-        background: rgba(6, 8, 13, 0.68);
-        border: round #3b4252;
-        align: center bottom;
-    }
-
-    #track-title {
-        width: 100%;
-        text-align: center;
-        color: #eceff4;
-        text-style: bold;
-        margin-top: 1;
-    }
-
-    #track-time {
-        width: 100%;
-        text-align: center;
-        color: #d8dee9;
-    }
-
-    #track-bar {
-        width: 100%;
-        text-align: center;
-        color: #e5b567;
-        margin-bottom: 1;
-    }
-
-    #controls-row {
-        width: 100%;
-        height: 3;
-        align: center middle;
-    }
-
-    .media-btn {
-        min-width: 6;
-        height: 3;
-        margin: 0 1;
-        background: rgba(18, 22, 32, 0.90);
-        color: #eceff4;
-        border: round #4c566a;
-    }
-
-    .media-btn:hover {
-        border: round #e5b567;
-        background: rgba(229, 181, 103, 0.20);
-    }
-
-    #btn-play {
-        min-width: 12;
-        border: round #e5b567;
     }
     """
 
@@ -234,6 +489,7 @@ class AsciiGreeterApp(App):
         session_cmd: str = "gnome-session",
     ) -> None:
         super().__init__()
+        self.ansi_color = True
         self.dry_run = dry_run
         self.auto_exit_sec = auto_exit_sec
         self.session_cmd = session_cmd.split()
@@ -241,47 +497,51 @@ class AsciiGreeterApp(App):
         self.player = MpvPlayer(
             MUSIC_DIR, start_paused=start_paused, start_pos=start_pos
         )
-        self.vinyl_renderer = VinylRenderer(radius=20.0)
+        self.vinyl_renderer = VinylRenderer(radius=21.0)
         self._current_cover: Optional[Path] = None
         self._angle: float = 0.0
         self._authenticating: bool = False
 
     def compose(self) -> ComposeResult:
-        yield Label("", id="top-bar")
-
-        with Container(id="login-layer"):
-            with Vertical(id="login-card"):
-                mode_tag = " [DRY-RUN]" if self.dry_run else ""
-                yield Label(f"◈ SYSTEM ACCESS{mode_tag}", id="card-title")
-                yield Label("USER", classes="field-label")
-                yield Input(value=DEFAULT_USER, placeholder="username", id="user-input")
-                yield Label("PASSWORD", classes="field-label")
-                yield Input(
-                    placeholder="enter password...",
-                    password=True,
-                    id="pass-input",
-                )
-                yield Label("", id="status-msg")
-                yield Button("[ ⏎ UNLOCK ]", id="login-btn")
+        with Vertical(id="top-bar"):
+            yield Label("", id="clock-big")
+            yield Label("", id="clock-sub")
 
         with Container(id="vinyl-dock"):
             with Vertical(id="vinyl-card"):
                 yield VinylDisplay(self.vinyl_renderer, id="vinyl-disc")
                 yield Label("Loading track...", id="track-title")
                 yield Label("00:00 / 00:00", id="track-time")
-                yield Label("─" * 24, id="track-bar")
+                yield Label("─" * 34, id="track-bar")
                 with Horizontal(id="controls-row"):
                     yield Button("⏮", id="btn-prev", classes="media-btn")
                     yield Button("⏸ PAUSE", id="btn-play", classes="media-btn")
                     yield Button("⏭", id="btn-next", classes="media-btn")
 
+        with Container(id="login-layer"):
+            with Vertical(id="login-card"):
+                yield Label(render_banner_text("SYSTEM ACCESS"), id="card-title")
+                yield Label("U S E R N A M E", classes="field-label")
+                yield Input(value=DEFAULT_USER, placeholder="username", id="user-input")
+                yield Label("P A S S W O R D", id="pass-label", classes="field-label")
+                yield Input(
+                    placeholder="enter password...",
+                    password=True,
+                    id="pass-input",
+                )
+                yield Label("", id="status-msg")
+                yield Button(render_banner_text("UNLOCK"), id="login-btn")
+
     def _apply_vinyl_layout_sizes(self) -> None:
         self.vinyl_renderer.recompute_geometry()
         disc = self.query_one("#vinyl-disc", VinylDisplay)
         disc.sync_dimensions()
-        card_w = self.vinyl_renderer.cols + 6
+        card_w = self.vinyl_renderer.cols + 2
+        card_h = self.vinyl_renderer.rows + 11
         self.query_one("#vinyl-card", Vertical).styles.width = card_w
-        self.query_one("#vinyl-dock", Container).styles.width = card_w + 2
+        vinyl_dock = self.query_one("#vinyl-dock", Container)
+        vinyl_dock.styles.width = card_w + 2
+        vinyl_dock.styles.height = card_h
         disc.refresh_disc(self._angle)
 
     def on_mount(self) -> None:
@@ -303,8 +563,7 @@ class AsciiGreeterApp(App):
     def on_unmount(self) -> None:
         self.player.shutdown()
         if supports_kitty_graphics():
-            sys.__stdout__.write("\x1b_Ga=d,d=I,i=42,q=2;\x1b\\")
-            sys.__stdout__.flush()
+            write_tty_atomic("\x1b_Ga=d,d=I,i=42,q=2;\x1b\\")
 
     def _sync_cover(self, cover_path: Optional[Path]) -> None:
         if cover_path != self._current_cover:
@@ -312,27 +571,28 @@ class AsciiGreeterApp(App):
             self.vinyl_renderer.set_cover(cover_path)
 
     def _update_clock(self) -> None:
-        now = datetime.datetime.now().strftime("%a %d %b  %H:%M")
-        host = os.uname().nodename
-        self.query_one("#top-bar", Label).update(f"{now}   •   {host}")
+        now = datetime.datetime.now()
+        self.query_one("#clock-big", Label).update(render_hero_clock(now.strftime("%H:%M")))
+        sub_text = f"{now.strftime('%a %d %b %Y')} • {os.uname().nodename}"
+        self.query_one("#clock-sub", Label).update(render_banner_text(sub_text))
 
     def _tick_frame(self) -> None:
         st = self.player.get_state()
         self._sync_cover(st["cover_path"])
 
         if not st["paused"]:
-            self._angle = (self._angle + 0.09) % (2.0 * math.pi)
+            self._angle = (self._angle + 0.082) % (2.0 * math.pi)
             self.query_one("#vinyl-disc", VinylDisplay).refresh_disc(self._angle)
 
         title = st["title"]
-        if len(title) > 30:
-            title = title[:27] + "..."
+        if len(title) > 34:
+            title = title[:31] + "..."
         self.query_one("#track-title", Label).update(title)
         self.query_one("#track-time", Label).update(
             f"{format_mmss(st['position'])} / {format_mmss(st['duration'])}"
         )
         self.query_one("#track-bar", Label).update(
-            build_progress_bar(st["position"], st["duration"], width=32)
+            build_progress_bar(st["position"], st["duration"], width=34)
         )
 
         play_btn = self.query_one("#btn-play", Button)

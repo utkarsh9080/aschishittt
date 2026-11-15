@@ -39,7 +39,7 @@ def get_cell_metrics() -> Tuple[float, float, float]:
                 return cw, ch, ch / cw
         except Exception:
             continue
-    return 7.0, 15.0, 2.14
+    return 7.5, 16.5, 2.20
 
 
 def supports_kitty_graphics() -> bool:
@@ -50,7 +50,7 @@ def supports_kitty_graphics() -> bool:
 class VinylRenderer:
     def __init__(
         self,
-        radius: float = 20.0,
+        radius: float = 21.0,
         label_ratio: float = 0.38,
         spindle_ratio: float = 0.048,
     ) -> None:
@@ -64,7 +64,6 @@ class VinylRenderer:
     def recompute_geometry(self) -> None:
         self.cell_w, self.cell_h, self.aspect_ratio = get_cell_metrics()
 
-        # Keep cols, rows, label_cols, and label_rows strictly even for exact symmetry
         self.cols = int(math.ceil(self.radius * 2.0)) + 2
         if self.cols % 2 != 0:
             self.cols += 1
@@ -104,7 +103,11 @@ class VinylRenderer:
         self.theta = np.arctan2(self.dy, self.dx)
 
         self.groove_mask = (self.r > self.r_label) & (self.r <= self.r_sub)
-        self.rim_mask = (self.r >= self.r_sub - 1.25) & (self.r <= self.r_sub)
+        self.rim_mask = (self.r >= self.r_sub - 1.6) & (self.r <= self.r_sub)
+
+        outer_fade = np.clip((self.r_sub - self.r) / 1.15, 0.0, 1.0)
+        inner_fade = np.clip((self.r - self.r_label) / 0.85, 0.0, 1.0)
+        self.edge_alpha = np.minimum(outer_fade, inner_fade)
 
         self._build_label_masks()
         if self.cover_path is not None:
@@ -158,7 +161,6 @@ class VinylRenderer:
         top = (h - side) // 2
         cropped = img.crop((left, top, left + side, top + side))
 
-        # Auto-crop black outer framing while keeping the full golden circular rim intact
         gray = np.asarray(cropped.convert("L"), dtype=np.uint8)
         corners = [gray[0, 0], gray[0, -1], gray[-1, 0], gray[-1, -1]]
         if max(int(c) for c in corners) < 18:
@@ -187,43 +189,47 @@ class VinylRenderer:
     def render_grooves(self, angle: float) -> Text:
         theta_rot = self.theta - angle
 
-        gold_lobe = np.abs(np.cos(2.0 * (theta_rot + 0.48))) ** 4.0
-        irid_flare = np.abs(np.cos(theta_rot + 0.68)) ** 7.5
+        gold_lobe = np.abs(np.cos(2.0 * (theta_rot + 0.48))) ** 3.2
+        irid_flare = np.abs(np.cos(theta_rot + 0.68)) ** 5.5
 
         caustic = (
-            0.48
-            + 0.27 * np.sin(6.5 * theta_rot + 0.30 * self.r)
-            + 0.25 * np.cos(12.0 * theta_rot - 0.50 * self.r + np.sin(3.0 * theta_rot))
+            0.54
+            + 0.24 * np.sin(4.0 * theta_rot + 0.16 * self.r)
+            + 0.22 * np.cos(8.0 * theta_rot - 0.24 * self.r + np.sin(2.0 * theta_rot))
         )
-        caustic = np.clip(caustic * 1.45 - 0.22, 0.0, 1.0)
-        grooves = 0.74 + 0.26 * np.sin(self.r * 4.2)
+        caustic = np.clip(caustic * 1.28 - 0.12, 0.0, 1.0)
 
-        # Subtle dark-graphite vinyl base so the entire circular silhouette is visible
-        gold_energy = np.clip(gold_lobe * (0.28 + 0.90 * caustic) * grooves, 0.0, 1.0)
-        gold_r = 18.0 + 237.0 * (gold_energy ** 0.85)
-        gold_g = 19.0 + 158.0 * (gold_energy ** 1.15)
-        gold_b = 24.0 + 30.0 * (gold_energy ** 1.70)
+        grooves = 0.88 + 0.12 * (
+            0.65 * np.sin(self.r * 0.95) + 0.35 * np.cos(self.r * 0.48)
+        )
+
+        gold_energy = np.clip(gold_lobe * (0.32 + 0.85 * caustic) * grooves, 0.0, 1.0)
+        gold_r = 28.0 + 227.0 * (gold_energy ** 0.82)
+        gold_g = 24.0 + 152.0 * (gold_energy ** 1.12)
+        gold_b = 26.0 + 32.0 * (gold_energy ** 1.65)
 
         diff_phase = (
-            (self.r * 0.22)
-            + 4.2 * np.sin(2.0 * (theta_rot + 0.68))
-            + 1.6 * np.cos(5.0 * theta_rot)
+            (self.r * 0.12)
+            + 3.2 * np.sin(2.0 * (theta_rot + 0.68))
+            + 1.1 * np.cos(4.0 * theta_rot)
         )
-        diff_strength = np.clip(irid_flare * (0.40 + 0.80 * caustic) * grooves, 0.0, 1.0)
-        spec_r = 128.0 + 127.0 * np.sin(diff_phase)
-        spec_g = 128.0 + 127.0 * np.sin(diff_phase + 2.05)
-        spec_b = 135.0 + 120.0 * np.sin(diff_phase + 4.10)
-        hot_core = (diff_strength ** 2.5) * 200.0
+        diff_strength = np.clip(irid_flare * (0.32 + 0.65 * caustic) * grooves, 0.0, 1.0)
+        spec_r = 140.0 + 115.0 * np.sin(diff_phase)
+        spec_g = 135.0 + 110.0 * np.sin(diff_phase + 2.05)
+        spec_b = 145.0 + 105.0 * np.sin(diff_phase + 4.10)
+        hot_core = (diff_strength ** 2.8) * 65.0
 
         rgb = np.zeros((self.sub_h, self.sub_w, 3), dtype=np.float32)
-        rgb[..., 0] = np.clip(gold_r + diff_strength * spec_r * 0.85 + hot_core, 0.0, 255.0)
-        rgb[..., 1] = np.clip(gold_g + diff_strength * spec_g * 0.90 + hot_core, 0.0, 255.0)
-        rgb[..., 2] = np.clip(gold_b + diff_strength * spec_b * 1.15 + hot_core, 0.0, 255.0)
+        rgb[..., 0] = np.clip(gold_r + diff_strength * spec_r * 0.65 + hot_core, 0.0, 255.0)
+        rgb[..., 1] = np.clip(gold_g + diff_strength * spec_g * 0.68 + hot_core, 0.0, 255.0)
+        rgb[..., 2] = np.clip(gold_b + diff_strength * spec_b * 0.80 + hot_core, 0.0, 255.0)
 
-        rim_glow = 0.42 + 0.58 * gold_lobe
-        rgb[..., 0] = np.where(self.rim_mask, 42.0 + 213.0 * rim_glow, rgb[..., 0])
-        rgb[..., 1] = np.where(self.rim_mask, 32.0 + 162.0 * rim_glow, rgb[..., 1])
-        rgb[..., 2] = np.where(self.rim_mask, 22.0 + 80.0 * rim_glow, rgb[..., 2])
+        rim_glow = 0.48 + 0.52 * gold_lobe
+        rgb[..., 0] = np.where(self.rim_mask, 68.0 + 187.0 * rim_glow, rgb[..., 0])
+        rgb[..., 1] = np.where(self.rim_mask, 52.0 + 144.0 * rim_glow, rgb[..., 1])
+        rgb[..., 2] = np.where(self.rim_mask, 34.0 + 72.0 * rim_glow, rgb[..., 2])
+
+        rgb = rgb * (0.55 + 0.45 * self.edge_alpha[..., None])
 
         blocks = self.groove_mask.reshape(self.rows, 4, self.cols, 2).transpose(0, 2, 1, 3)
         masks = (blocks * BRAILLE_WEIGHTS).sum(axis=(2, 3), dtype=np.uint16)
